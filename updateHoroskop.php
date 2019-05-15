@@ -3,11 +3,11 @@
 <?php 
  parse_str(file_get_contents("php://input"), $_PUT);
 
- include 'addHoroskop.php';
+ include './addHoroskop.php';
 
  if(($_SERVER['REQUEST_METHOD'] == 'POST') AND ($_POST['collection'] == 'update')){
        $date = $_POST['newHoroskop'];
-       $horoskope = new addhoroskop();
+       $horoskope = new addHoroskop();
        $newHScope = $horoskope->showHoroskope($date);
 
        if(isset($_SESSION['horoskope'])){

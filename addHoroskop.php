@@ -1,9 +1,8 @@
-/* POST */
+
 
 
 <?php session_start(); 
-
-
+ 
 class AddHoroskop{
     function __construct(){
        include_once('database.php');
@@ -11,8 +10,8 @@ class AddHoroskop{
     }
 
     public function showMyHoroscope($chosenDate) {
-        $query = $this->database->connection->prepare("SELECT * FROM labb-3;");
-        WHERE (dateFrom <= '$chosenDate') AND (dateUntil >= '$chosenDate');
+        $query = $this->database->connection->prepare("SELECT horoscopeSign FROM 'labb-3'
+        WHERE (dateFrom <= '$chosenDate') AND (dateUntil >= '$chosenDate');");
         $query->execute();
         $result = $query->fetchAll();
 
@@ -26,10 +25,9 @@ class AddHoroskop{
      if($_SERVER['REQUEST_METHOD'] == "POST"){
          try{
              if($_POST['collection'] == 'horoskope') {
-                 include "addHoroskop.php";
                  $date = $_POST['inputDate'];
                  $currentHoroskop = new AddHoroskop();
-                 $databaseResult = $currentHoroskop->save($date);
+                 $databaseResult = $currentHoroskop->showMyHoroscope($date);
                  echo json_encode($databaseResult);
                  exit();
              }

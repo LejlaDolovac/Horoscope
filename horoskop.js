@@ -1,11 +1,23 @@
 var date = document.querySelector('#birthday');
 var input = document.querySelector('.zodiac');
 
-function makeRequest(url, method, formdata, callback){
+function makeRequest(url, method, formData, callback){
 
-    const header = method == "GET" || !formdata ? {method: method} : {method: method, body: formdata};
-
-    fetch(url, header).then((data) => {
+    var headers;
+    
+    if(method == "GET" || !formData){
+     headers = {
+         method: method
+        };
+    } else {
+        headers = {
+            method: method,
+            body: formData
+        };
+    }
+    
+    fetch(url, headers).then((data) => {
+        console.log('ygu')
         return data.json();
     }).then((result)=>{
         callback(result);
@@ -15,21 +27,25 @@ function makeRequest(url, method, formdata, callback){
 }
 
 // Adds to sessions and checks with the database
- function saveHoroscope(){
-     var userDate = document.getElementById("birthDay").value;
-     var newDate = userDate.slice(5);
+function saveHoroscope(){
+    var userDate = document.getElementById("birthDay").value;
+    var newDate = userDate.slice(5);
+    var chosenDate = '';
+    
+    if(newDate <= "01-19"){
+        chosenDate = ("2020-") + newDate;
+    } else {
+        chosenDate = ("2019-") + newDate;
+    }
+    
+    console.log("1")
+     var formData = new FormData();
+     formData.set("newHoroskope", chosenDate);
+     formData.set("collection", "horoskope");
 
-     if(newDate <= "01-19"){
-         var chosenDate = ("2020-") + newDate;
-     } else {
-         var chosenDate = ("2019-") + newDate;
-     }
-
-     var formDate = new formDate();
-     formDate.set("newHoroskope", chosenDate);
-     formDate.set("collection", "horoskope");
-
-     makeRequest("addHoroskop.php", "POST", formDate, (date)=> {
+     makeRequest("addHoroskop.php", "POST", formData, (response)=> {
+         console.log(response);
+         makeRequest.send(fromData);
          viewHoroskop();
      });
 
@@ -38,7 +54,7 @@ function makeRequest(url, method, formdata, callback){
  
     function updateHoroscope() {
 
-        var userDate = document.getElementById("birthDate").value;
+        var userDate = document.getElementById("birthDay").value;
         var newDate = userDate.slice(5);
     
         if (newDate <= "01/19") {
